@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蜜莉葡萄 · 田园葡萄屋</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+        :root {
+            --cream: #faf6ef;
+            --cream-dark: #f0e8d8;
+            --green-deep: #2a5418;
+            --green: #3b7424;
+            --green-mid: #5a9a3a;
+            --green-light: #8ec268;
+            --green-pale: #e6efd9;
+            --amber: #c4893a;
+            --amber-light: #ddb05a;
+            --amber-glow: #f5d98a;
+            --amber-pale: #fdf4e0;
+            --grape: #6b2d52;
+            --grape-light: #a84d7a;
+            --brown: #4a3520;
+            --brown-mid: #7a6448;
+            --brown-muted: #a09078;
+            --text: #3a2a1a;
+            --text-light: #6a5a48;
+            --white: #ffffff;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Serif SC', 'Georgia', 'Times New Roman', serif;
+            color: var(--text);
+            background: var(--cream);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 10000;
+        }
+        .font-brand { font-family: 'Ma Shan Zheng', cursive; }
+        .font-body  { font-family: 'Noto Serif SC', serif; }
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        section { position: relative; }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.12s; }
+        .reveal-delay-2 { transition-delay: 0.24s; }
+        .reveal-delay-3 { transition-delay: 0.36s; }
+        .reveal-delay-4 { transition-delay: 0.48s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 0.25; }
+            50%      { opacity: 0.45; }
+        }
+
+        /* Vine Divider */
+        .vine-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 0;
+        }
+        .vine-divider svg { width: 120px; height: 24px; }
+
+        /* Header */
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(250, 246, 239, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(74, 53, 32, 0.06);
+            transition: box-shadow 0.3s ease;
+        }
+        .site-header.scrolled {
+            box-shadow: 0 2px 20px rgba(74, 53, 32, 0.08);
+        }
+        .header-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-brand {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 22px;
+            color: var(--green-deep);
+            letter-spacing: 2px;
+        }
+        .header-contact {
+            font-size: 13px;
+            color: var(--brown-mid);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        .header-contact a {
+            color: var(--amber);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--amber);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 24px 60px;
+            background:
+                radial-gradient(ellipse at 25% 60%, rgba(230, 239, 217, 0.6) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 30%, rgba(253, 244, 224, 0.8) 0%, transparent 50%),
+                var(--cream);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0; right: 0;
+            height: 80px;
+            background: linear-gradient(to top, var(--white), transparent);
+            z-index: 2;
+        }
+        .hero-leaf {
+            position: absolute;
+            opacity: 0.12;
+            z-index: 0;
+            animation: gentlePulse 6s ease-in-out infinite;
+        }
+        .hero-leaf--1 {
+            top: 8%; left: 5%;
+            width: 160px; height: 200px;
+            transform: rotate(-25deg);
+        }
+        .hero-leaf--2 {
+            bottom: 10%; right: 3%;
+            width: 130px; height: 170px;
+            transform: rotate(30deg) scaleX(-1);
+            animation-delay: 2s;
+        }
+        .hero-leaf--3 {
+            top: 20%; right: 10%;
+            width: 90px; height: 110px;
+            transform: rotate(15deg);
+            animation-delay: 4s;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border: 1px solid var(--green-mid);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--green);
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+            animation: fadeInDown 0.8s ease 0.2s both;
+        }
+        .hero-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: clamp(52px, 10vw, 96px);
+            color: var(--green-deep);
+            line-height: 1.15;
+            letter-spacing: 8px;
+            margin-bottom: 16px;
+            animation: fadeInDown 0.8s ease 0.4s both;
+        }
+        .hero-subtitle {
+            font-size: clamp(16px, 2.5vw, 22px);
+            font-weight: 300;
+            color: var(--brown-mid);
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            animation: fadeInDown 0.8s ease 0.6s both;
+        }
+        .hero-desc {
+            font-size: 14px;
+            color: var(--brown-muted);
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease 0.8s both;
+        }
+        .hero-cta {
+            display: inline-block;
+            padding: 14px 48px;
+            background: var(--green-deep);
+            color: var(--cream);
+            font-size: 15px;
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: fadeInDown 0.8s ease 1s both;
+        }
+        .hero-cta:hover {
+            background: var(--green);
+            letter-spacing: 6px;
+            box-shadow: 0 8px 30px rgba(42, 84, 24, 0.2);
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            animation: float 3s ease-in-out infinite;
+        }
+        .hero-scroll svg {
+            width: 24px; height: 24px;
+            color: var(--brown-muted);
+            opacity: 0.5;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0 60px;
+            background: var(--white);
+        }
+        .section-label {
+            text-align: center;
+            font-size: 12px;
+            color: var(--green-mid);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(24px, 4vw, 34px);
+            font-weight: 600;
+            color: var(--green-deep);
+            margin-bottom: 12px;
+            letter-spacing: 3px;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: var(--brown-muted);
+            font-weight: 300;
+            margin-bottom: 52px;
+            letter-spacing: 1px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 8px;
+            background: var(--cream);
+            border: 1px solid rgba(74, 53, 32, 0.04);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(74, 53, 32, 0.08);
+        }
+        .feature-icon {
+            width: 56px; height: 56px;
+            margin: 0 auto 20px;
+            color: var(--green);
+        }
+        .feature-card:nth-child(2) .feature-icon { color: var(--amber); }
+        .feature-card:nth-child(3) .feature-icon { color: var(--green-mid); }
+        .feature-card:nth-child(4) .feature-icon { color: var(--grape); }
+        .feature-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .feature-text {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 1.9;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 80px 0;
+            background:
+                radial-gradient(ellipse at 30% 50%, rgba(42, 84, 24, 0.9), transparent 70%),
+                radial-gradient(ellipse at 80% 40%, rgba(42, 84, 24, 0.7), transparent 60%),
+                var(--green-deep);
+            color: var(--cream);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+        .stat-item {
+            padding: 20px;
+        }
+        .stat-number {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: clamp(40px, 7vw, 64px);
+            line-height: 1;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+        }
+        .stat-unit {
+            font-size: 16px;
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 300;
+            color: var(--amber-glow);
+        }
+        .stat-label {
+            font-size: 13px;
+            color: rgba(250, 246, 239, 0.6);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Story */
+        .story {
+            padding: 80px 0;
+            background: var(--cream);
+        }
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: center;
+        }
+        .story-text h3 {
+            font-size: clamp(22px, 3.5vw, 30px);
+            font-weight: 600;
+            color: var(--green-deep);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .story-text p {
+            font-size: 15px;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 2;
+            margin-bottom: 16px;
+        }
+        .story-text .highlight {
+            display: inline;
+            color: var(--amber);
+            font-weight: 400;
+            border-bottom: 1px solid var(--amber-glow);
+        }
+        .story-image {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--cream-dark);
+            border: 1px solid rgba(74, 53, 32, 0.08);
+        }
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .story-image .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--brown-muted);
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border: 2px dashed rgba(160, 144, 120, 0.3);
+            border-radius: 12px;
+        }
+        .story-image .placeholder svg {
+            width: 48px; height: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+        .story-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            box-shadow: inset 0 0 60px rgba(74, 53, 32, 0.06);
+            pointer-events: none;
+        }
+
+        /* Taste */
+        .taste {
+            padding: 80px 0;
+            background: var(--white);
+            text-align: center;
+        }
+        .taste-content {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .taste-quote {
+            font-size: clamp(18px, 3vw, 24px);
+            font-weight: 300;
+            color: var(--brown);
+            line-height: 2.2;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 0 20px;
+        }
+        .taste-quote::before {
+            content: '"';
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 72px;
+            color: var(--amber-glow);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            line-height: 1;
+        }
+        .taste-tags {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .taste-tag {
+            padding: 8px 24px;
+            border: 1px solid var(--green-pale);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--green);
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: var(--green-pale);
+        }
+        .taste-tag:nth-child(2) {
+            border-color: var(--amber-pale);
+            background: var(--amber-pale);
+            color: var(--amber);
+        }
+        .taste-tag:nth-child(3) {
+            border-color: rgba(107, 45, 82, 0.12);
+            background: rgba(107, 45, 82, 0.05);
+            color: var(--grape);
+        }
+
+        /* Gallery */
+        .gallery {
+            padding: 80px 0;
+            background: var(--cream);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            background: var(--cream-dark);
+            border: 1px solid rgba(74, 53, 32, 0.06);
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(74, 53, 32, 0.1);
+        }
+        .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-item .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--brown-muted);
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border: 2px dashed rgba(160, 144, 120, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .gallery-item .placeholder svg {
+            width: 36px; height: 36px;
+            margin-bottom: 8px;
+            opacity: 0.25;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 80px 0 72px;
+            background:
+                radial-gradient(ellipse at 50% 100%, rgba(196, 137, 58, 0.15) 0%, transparent 60%),
+                var(--cream-dark);
+            text-align: center;
+        }
+        .cta-section .section-title {
+            color: var(--brown);
+        }
+        .cta-info {
+            max-width: 500px;
+            margin: 0 auto 36px;
+            font-size: 15px;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 2;
+        }
+        .cta-ways {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .cta-way {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid rgba(74, 53, 32, 0.06);
+            box-shadow: 0 2px 12px rgba(74, 53, 32, 0.04);
+            transition: transform 0.3s ease;
+        }
+        .cta-way:hover { transform: translateY(-3px); }
+        .cta-way svg {
+            width: 20px; height: 20px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+        .cta-way span {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 56px;
+            background: var(--amber);
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cta-btn:hover {
+            background: var(--amber-light);
+            letter-spacing: 6px;
+            box-shadow: 0 8px 30px rgba(196, 137, 58, 0.25);
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 32px 0;
+            background: var(--green-deep);
+            text-align: center;
+        }
+        .footer-brand {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 20px;
+            color: var(--cream);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+        .footer-text {
+            font-size: 12px;
+            color: rgba(250, 246, 239, 0.4);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            .feature-card { padding: 28px 14px; }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            .stat-item { padding: 12px; }
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .story-image {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+                aspect-ratio: 16 / 9;
+            }
+            .hero-leaf { display: none; }
+            .hero-scroll { bottom: 60px; }
+        }
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .cta-ways {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header-contact { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="header-inner">
+            <div class="header-brand">田园葡萄屋</div>
+            <div class="header-contact">
+                口镇街道林马北葡萄园 · <a href="tel:19845318878">198-4531-8878</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <svg class="hero-leaf hero-leaf--1" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M80 10C40 50 15 90 25 140C30 160 50 180 80 195C110 180 130 160 135 140C145 90 120 50 80 10Z" fill="#3b7424"/>
+            <path d="M80 10V195" stroke="#2a5418" stroke-width="2" opacity="0.5"/>
+            <path d="M80 60C60 50 40 58 35 75" stroke="#2a5418" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M80 100C100 90 120 98 125 115" stroke="#2a5418" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M80 140C65 132 48 138 42 152" stroke="#2a5418" stroke-width="1.5" fill="none" opacity="0.4"/>
+        </svg>
+        <svg class="hero-leaf hero-leaf--2" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M80 10C40 50 15 90 25 140C30 160 50 180 80 195C110 180 130 160 135 140C145 90 120 50 80 10Z" fill="#3b7424"/>
+            <path d="M80 10V195" stroke="#2a5418" stroke-width="2" opacity="0.5"/>
+        </svg>
+        <svg class="hero-leaf hero-leaf--3" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M80 10C40 50 15 90 25 140C30 160 50 180 80 195C110 180 130 160 135 140C145 90 120 50 80 10Z" fill="#5a9a3a"/>
+        </svg>
+
+        <div class="hero-content">
+            <div class="hero-badge">自 家 果 园 · 自 然 种 植</div>
+            <h1 class="hero-title">蜜莉葡萄</h1>
+            <p class="hero-subtitle">摘下来就能吃的安心好果</p>
+            <p class="hero-desc">不打药 · 不催熟 · 从枝头到舌尖的天然本味</p>
+            <a href="#story" class="hero-cta">了解更多</a>
+        </div>
+
+        <div class="hero-scroll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="section-label reveal">WHY MILI</div>
+            <h2 class="section-title reveal">四 大 核 心 优 势</h2>
+            <p class="section-subtitle reveal">每一颗蜜莉葡萄，都是大自然与匠心的馈赠</p>
+
+            <div class="features-grid">
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28 6C16 16 8 28 12 40C14 46 20 50 28 52C36 50 42 46 44 40C48 28 40 16 28 6Z" fill="currentColor" opacity="0.12"/>
+                            <path d="M28 6C16 16 8 28 12 40C14 46 20 50 28 52C36 50 42 46 44 40C48 28 40 16 28 6Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M28 14V48" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                            <path d="M28 24C22 20 16 24 14 32" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4"/>
+                            <path d="M28 34C34 30 40 34 42 42" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="feature-name">天然安心</div>
+                    <div class="feature-text">不打农药、不催熟<br><strong>摘下来就能直接吃</strong></div>
+                </div>
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28 8C28 8 12 26 12 36C12 46 19 50 28 50C37 50 44 46 44 36C44 26 28 8 28 8Z" fill="currentColor" opacity="0.12"/>
+                            <path d="M28 8C28 8 12 26 12 36C12 46 19 50 28 50C37 50 44 46 44 36C44 26 28 8 28 8Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M22 36C22 32 25 28 28 28" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="feature-name">蜜甜多汁</div>
+                    <div class="feature-text">含糖量高达 <strong>17.9%</strong><br>浓郁蜂蜜香，果肉柔软</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-3">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="28" r="20" fill="currentColor" opacity="0.12"/>
+                            <circle cx="28" cy="28" r="20" stroke="currentColor" stroke-width="2"/>
+                            <path d="M28 16V28L34 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="feature-name">新鲜抢先</div>
+                    <div class="feature-text">比巨峰葡萄早熟 <strong>7–10</strong> 天<br>第一时间尝到初夏的甜</div>
+                </div>
+                <div class="feature-card reveal reveal-delay-4">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="24" r="16" fill="currentColor" opacity="0.12"/>
+                            <circle cx="28" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 8L22 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M36 8L34 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M22 22L26 26L34 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 44L28 40L34 44" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M28 40V28" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="feature-name">品质认证</div>
+                    <div class="feature-text">"中华名果" 称号<br>二十余年口碑品种</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item reveal">
+                    <div class="stat-number">17.9<span class="stat-unit">%</span></div>
+                    <div class="stat-label">含 糖 量</div>
+                </div>
+                <div class="stat-item reveal reveal-delay-1">
+                    <div class="stat-number">零</div>
+                    <div class="stat-label">催 熟 剂</div>
+                </div>
+                <div class="stat-item reveal reveal-delay-2">
+                    <div class="stat-number">10<span class="stat-unit">天</span></div>
+                    <div class="stat-label">提 前 成 熟</div>
+                </div>
+                <div class="stat-item reveal reveal-delay-3">
+                    <div class="stat-number">95.8<span class="stat-unit">%</span></div>
+                    <div class="stat-label">结 果 枝 率</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story -->
+    <section class="story" id="story">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-text reveal">
+                    <h3>一颗蜜莉葡萄的<br>由来与坚持</h3>
+                    <p>
+                        蜜莉葡萄，原名"雨水红"，源自日本，经多年选育优化，
+                        如今已在我们的果园扎根生长。它属于欧美杂交种，
+                        天生具有<span class="highlight">极强的抗病性</span>——
+                        这让我们能够完全不使用农药，
+                        让每一颗葡萄都在阳光雨露中自然成熟。
+                    </p>
+                    <p>
+                        我们坚持<span class="highlight">不催熟、不打药</span>，
+                        葡萄从开花到成熟，全靠大自然的节奏。
+                        从枝头摘下来，无需特别清洗，就可以放心食用。
+                        这份安心，是我们对每一位食客最朴素的承诺。
+                    </p>
+                    <p style="margin-top: 24px; padding: 16px 20px; background: var(--green-pale); border-radius: 8px; border-left: 3px solid var(--green); font-size: 14px; color: var(--green-deep);">
+                        <strong>果园地址：</strong>口镇街道林马北葡萄园
+                    </p>
+                    <p>
+                        成熟的蜜莉葡萄呈美丽的紫红色，果粒饱满圆润，
+                        表面覆着一层天然果霜。轻轻一咬，柔软的果肉便涌出清甜的汁水，
+                        带着淡淡的<span class="highlight">蜂蜜香气</span>……
+                        这是属于初夏的味道。
+                    </p>
+                </div>
+                <div class="story-image reveal reveal-delay-2">
+                    <!-- ⬇ 替换为您的果园照片 -->
+                    <img src="photos/daguoyuan.jpg" alt="田园葡萄屋">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vine Divider -->
+    <div class="vine-divider">
+        <svg viewBox="0 0 200 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 12Q30 4 60 12Q90 20 120 12Q150 4 180 12L200 12" stroke="#3b7424" stroke-width="1" opacity="0.2"/>
+            <circle cx="100" cy="12" r="3" fill="#3b7424" opacity="0.2"/>
+            <path d="M92 8C94 4 98 3 100 5" stroke="#3b7424" stroke-width="1" fill="none" opacity="0.2"/>
+            <path d="M108 8C106 4 102 3 100 5" stroke="#3b7424" stroke-width="1" fill="none" opacity="0.2"/>
+        </svg>
+    </div>
+
+    <!-- Taste -->
+    <section class="taste">
+        <div class="container">
+            <div class="taste-content">
+                <div class="section-label reveal">TASTE</div>
+                <h2 class="section-title reveal">风 味 描 述</h2>
+                <p class="section-subtitle reveal">咬下第一口的感受</p>
+                <div class="taste-quote reveal">
+                    紫红色的果皮薄而柔韧，轻轻一咬便自然分离。
+                    柔软的果肉裹挟着清甜的汁水在口中散开，
+                    不是那种尖锐的甜，而是温润的、带着蜂蜜香气的绵长甘甜。
+                    果粉在唇齿间留下一层细腻的触感，
+                    仿佛初夏清晨的露水，清新而自然。
+                </div>
+                <div class="taste-tags reveal">
+                    <span class="taste-tag">蜂蜜清香</span>
+                    <span class="taste-tag">绵润甘甜</span>
+                    <span class="taste-tag">柔软多汁</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery">
+        <div class="container">
+            <div class="section-label reveal">GALLERY</div>
+            <h2 class="section-title reveal">果 园 实 拍</h2>
+            <p class="section-subtitle reveal">用镜头记录每一串蜜莉的成长</p>
+
+            <div class="gallery-grid">
+                <!-- ⬇ 请将下方 placeholder 替换为您的照片 -->
+                <div class="gallery-item reveal">
+                    <img src="photos/guosui.jpg" alt="蜜莉葡萄特写">
+                </div>
+                <div class="gallery-item reveal reveal-delay-1">
+                    <img src="photos/guoshi.jpg" alt="蜜莉葡萄果穗">
+                </div>
+                <div class="gallery-item reveal reveal-delay-2">
+                    <img src="photos/guoyuan.jpg" alt="田园葡萄屋">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="photos/caizhai.jpg" alt="采摘蜜莉葡萄">
+                </div>
+                <div class="gallery-item reveal reveal-delay-1">
+                    <img src="photos/shoupeng.jpg" alt="蜜莉葡萄品尝">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="section-label reveal">ORDER</div>
+            <h2 class="section-title reveal">果园直供 · 新鲜直达</h2>
+            <div class="cta-info reveal">
+                从枝头采摘到包装发货，全程用心呵护。<br>
+                不催熟、不打药，摘下来就能吃，让您放心享受自然的甜。
+            </div>
+            <div class="cta-ways reveal">
+                <div class="cta-way">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                    </svg>
+                    <span>电话订购</span>
+                </div>
+                <div class="cta-way">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                    </svg>
+                    <span>微信下单</span>
+                </div>
+                <div class="cta-way">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>来园采摘</span>
+                </div>
+            </div>
+            <div class="reveal" style="margin-bottom: 32px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; color: var(--brown-mid);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span>口镇街道林马北葡萄园</span>
+            </div>
+            <a href="tel:19845318878" class="cta-btn reveal">立即订购</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-brand">田园葡萄屋</div>
+        <div class="footer-text">自家果园 · 现摘现发 · 不催熟不打药 · 吃得放心</div>
+        <div class="footer-text" style="margin-top: 6px; opacity: 0.55;">地址：口镇街道林马北葡萄园</div>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 20);
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -40px 0px'
+        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
